@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Online Market - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Icons */
+        .bg-icons {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        .icon {
+            position: absolute;
+            font-size: 3rem;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .icon:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .icon:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; }
+        .icon:nth-child(3) { left: 20%; top: 80%; animation-delay: 4s; }
+        .icon:nth-child(4) { left: 70%; top: 70%; animation-delay: 6s; }
+        .icon:nth-child(5) { left: 50%; top: 50%; animation-delay: 8s; }
+        .icon:nth-child(6) { left: 30%; top: 40%; animation-delay: 10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logout-btn {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.625rem 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.125rem;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Admin Cards */
+        .admin-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .admin-card:nth-child(1) { animation-delay: 0.1s; }
+        .admin-card:nth-child(2) { animation-delay: 0.2s; }
+        .admin-card:nth-child(3) { animation-delay: 0.3s; }
+        .admin-card:nth-child(4) { animation-delay: 0.4s; }
+        .admin-card:nth-child(5) { animation-delay: 0.5s; }
+        .admin-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .admin-card:hover::before {
+            left: 100%;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover .card-icon {
+            transform: rotateY(360deg);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Animated Background Icons -->
+<div class="bg-icons">
+    <div class="icon">⚙️</div>
+    <div class="icon">📊</div>
+    <div class="icon">🛒</div>
+    <div class="icon">📦</div>
+    <div class="icon">💳</div>
+    <div class="icon">⭐</div>
+</div>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">Admin Dashboard</div>
+        <a href="/login.html" class="logout-btn">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1>Welcome, Administrator</h1>
+        <p>Manage your vintage marketplace with ease</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-number">1,247</div>
+            <div class="stat-label">Total Products</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">342</div>
+            <div class="stat-label">Active Orders</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">89</div>
+            <div class="stat-label">Categories</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">$24.5K</div>
+            <div class="stat-label">Monthly Revenue</div>
+        </div>
+    </div>
+
+    <div class="grid">
+        <a href="/category-dashboard.html" class="admin-card">
+            <div class="card-icon">📁</div>
+            <h3 class="card-title">Manage Categories</h3>
+            <p class="card-description">Organize and maintain product categories</p>
+        </a>
+
+        <a href="/order-dashboard.html" class="admin-card">
+            <div class="card-icon">📦</div>
+            <h3 class="card-title">Manage Orders</h3>
+            <p class="card-description">Track and process customer orders</p>
+        </a>
+
+        <a href="/inventory-dashboard.html" class="admin-card">
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">Manage Inventory</h3>
+            <p class="card-description">Monitor stock levels and products</p>
+        </a>
+
+        <a href="/review-dashboard.html" class="admin-card">
+            <div class="card-icon">⭐</div>
+            <h3 class="card-title">Manage Reviews</h3>
+            <p class="card-description">Moderate customer feedback and ratings</p>
+        </a>
+
+        <a href="/payment-dashboard.html" class="admin-card">
+            <div class="card-icon">💳</div>
+            <h3 class="card-title">Manage Payments</h3>
+            <p class="card-description">Handle transactions and refunds</p>
+        </a>
+
+        <a href="/discount-dashboard.html" class="admin-card">
+            <div class="card-icon">🏷️</div>
+            <h3 class="card-title">Manage Discounts</h3>
+            <p class="card-description">Create and control promotional offers</p>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+    // Check for admin authentication (using URL params instead of localStorage)
+    const urlParams = new URLSearchParams(window.location.search);
+    const userData = urlParams.get('data');
+
+    if (userData) {
+        try {
+            const user = JSON.parse(decodeURIComponent(userData));
+            if (!user || !user.aId) {
+                window.location.href = '/login.html';
+            }
+        } catch (e) {
+            window.location.href = '/login.html';
+        }
+    } else {
+        // Check if coming from login page (admin type)
+        // In real implementation, this would check session/token
+        console.log('Admin dashboard loaded');
+    }
+
+    // Add ripple effect on card click
+    document.querySelectorAll('.admin-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background: rgba(102, 126, 234, 0.5);
+                border-radius: 50%;
+                pointer-events: none;
+                animation: rippleEffect 0.6s ease-out;
+            `;
+            ripple.style.left = e.clientX - card.getBoundingClientRect().left - 10 + 'px';
+            ripple.style.top = e.clientY - card.getBoundingClientRect().top - 10 + 'px';
+            card.appendChild(ripple);
+
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    // Add ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes rippleEffect {
+            to {
+                width: 200px;
+                height: 200px;
+                margin: -100px 0 0 -100px;
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Online Market - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -250px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -50px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            color: #1f2937;
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+
+        .product-content {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .status-available {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .status-unavailable {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        .btn-cart {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-cart:active {
+            transform: scale(0.98);
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(102, 126, 234, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+                border-radius: 16px;
+            }
+
+            .search-box input,
+            .search-box button {
+                border-radius: 12px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-container">
+        <div class="logo">VintageOnlineMarket</div>
+        <div class="nav-links">
+            <a href="/login.html">Login</a>
+            <a href="/register.html">Register</a>
+            <a href="/about.html">About</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Discover Vintage Treasures</h1>
+        <p>Unique items from trusted sellers, curated just for you</p>
+        <div class="search-box">
+            <input type="text" id="search" placeholder="Search for vintage products...">
+            <button onclick="searchProducts()">Search</button>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <h2 class="section-title">Categories</h2>
+    <div id="categories" class="grid">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading categories...</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="section-title">Featured Products</h2>
+    <div id="products" class="grid">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading products...</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+    // Fetch Categories
+    fetch('http://localhost:8080/api/categories')
+        .then(res => res.json())
+        .then(data => {
+            const div = document.getElementById('categories');
+            if (data.length === 0) {
+                div.innerHTML = '<p class="loading">No categories available</p>';
+                return;
+            }
+            div.innerHTML = data.map(cat => `
+                <div class="card" onclick="location.href='products.html?cat=${cat.catId}'">
+                    <h3>${cat.name}</h3>
+                    <p>${cat.description}</p>
+                </div>
+            `).join('');
+        })
+        .catch(error => {
+            document.getElementById('categories').innerHTML =
+                `<p class="loading" style="color: #ef4444;">Error loading categories: ${error.message}</p>`;
+        });
+
+    // Fetch Products
+    fetch('http://localhost:8080/api/products')
+        .then(res => res.json())
+        .then(data => {
+            const div = document.getElementById('products');
+            if (data.length === 0) {
+                div.innerHTML = '<p class="loading">No products available</p>';
+                return;
+            }
+            div.innerHTML = data.map(prod => `
+                <div class="product-card">
+                    <img src="${prod.image || 'https://via.placeholder.com/400x300/667eea/ffffff?text=Vintage+Item'}"
+                         alt="${prod.name}"
+                         class="product-image">
+                    <div class="product-content">
+                        <h3 class="product-name">${prod.name}</h3>
+                        <div class="product-price">$${prod.price}</div>
+                        <span class="product-status ${prod.available ? 'status-available' : 'status-unavailable'}">
+                            ${prod.available ? '✓ Available' : '✗ Unavailable'}
+                        </span>
+                        <button onclick="addToCart(${prod.productId})" class="btn-cart"
+                                ${!prod.available ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(error => {
+            document.getElementById('products').innerHTML =
+                `<p class="loading" style="color: #ef4444;">Error loading products: ${error.message}</p>`;
+        });
+
+    // Add to Cart
+    window.addToCart = (id) => {
+        // Create temporary notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = '✓ Added to cart!';
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
+    };
+
+    // Search Products
+    window.searchProducts = () => {
+        const query = document.getElementById('search').value.trim();
+        if (!query) {
+            alert('Please enter a search term');
+            return;
+        }
+
+        const productsDiv = document.getElementById('products');
+        productsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Searching...</p></div>';
+
+        fetch(`http://localhost:8080/api/products?search=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length === 0) {
+                    productsDiv.innerHTML = `<p class="loading">No products found for "${query}"</p>`;
+                    return;
+                }
+                productsDiv.innerHTML = data.map(prod => `
+                    <div class="product-card">
+                        <img src="${prod.image || 'https://via.placeholder.com/400x300/667eea/ffffff?text=Vintage+Item'}"
+                             alt="${prod.name}"
+                             class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-name">${prod.name}</h3>
+                            <div class="product-price">$${prod.price}</div>
+                            <span class="product-status ${prod.available ? 'status-available' : 'status-unavailable'}">
+                                ${prod.available ? '✓ Available' : '✗ Unavailable'}
+                            </span>
+                            <button onclick="addToCart(${prod.productId})" class="btn-cart"
+                                    ${!prod.available ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(error => {
+                productsDiv.innerHTML =
+                    `<p class="loading" style="color: #ef4444;">Error searching: ${error.message}</p>`;
+            });
+    };
+
+    // Add CSS for notification animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

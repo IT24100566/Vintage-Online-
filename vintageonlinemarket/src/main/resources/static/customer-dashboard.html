@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Online Market - Customer Dashboard</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          position: relative;
+          overflow-x: hidden;
+        }
+
+        .bg-icons {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          opacity: 0.08;
+          z-index: 0;
+        }
+
+        .icon {
+          position: absolute;
+          font-size: 3rem;
+          animation: float 20s infinite ease-in-out;
+        }
+
+        .icon:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .icon:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; }
+        .icon:nth-child(3) { left: 20%; top: 80%; animation-delay: 4s; }
+        .icon:nth-child(4) { left: 70%; top: 70%; animation-delay: 6s; }
+        .icon:nth-child(5) { left: 50%; top: 50%; animation-delay: 8s; }
+        .icon:nth-child(6) { left: 30%; top: 40%; animation-delay: 10s; }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        nav {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+          padding: 1rem;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        nav .container {
+          max-width: 1400px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        nav h1 {
+          font-size: 1.75rem;
+          font-weight: 700;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        nav a {
+          color: #4b5563;
+          text-decoration: none;
+          font-weight: 600;
+          padding: 0.625rem 1.5rem;
+          background: rgba(102, 126, 234, 0.1);
+          border-radius: 12px;
+          transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .container {
+          max-width: 1400px;
+          margin: 3rem auto;
+          padding: 0 2rem;
+          position: relative;
+          z-index: 10;
+        }
+
+        h2 {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: white;
+          text-align: center;
+          margin-bottom: 3rem;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+          margin-bottom: 3rem;
+          animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: white;
+          margin-bottom: 1.5rem;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          overflow: hidden;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1rem;
+        }
+
+        thead {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        th {
+          padding: 1rem;
+          text-align: left;
+          color: white;
+          font-weight: 600;
+          font-size: 0.95rem;
+        }
+
+        tbody tr {
+          border-bottom: 1px solid #e5e7eb;
+          transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+          background: rgba(102, 126, 234, 0.05);
+        }
+
+        tbody tr:last-child {
+          border-bottom: none;
+        }
+
+        td {
+          padding: 1rem;
+          color: #4b5563;
+        }
+
+        button {
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-size: 0.875rem;
+          margin-right: 0.5rem;
+        }
+
+        .bg-blue-500 {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+
+        .bg-blue-500:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .bg-yellow-400 {
+          background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+          color: white;
+        }
+
+        .bg-yellow-400:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+        }
+
+        .bg-red-500 {
+          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+          color: white;
+        }
+
+        .bg-red-500:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .bg-green-500 {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+
+        .bg-green-500:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        form {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 2rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .space-y-4 > * + * {
+          margin-top: 1rem;
+        }
+
+        input {
+          display: block;
+          width: 100%;
+          padding: 0.875rem 1rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 1rem;
+          transition: all 0.3s ease;
+          background: white;
+          color: #1f2937;
+        }
+
+        input:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .flex {
+          display: flex;
+        }
+
+        .space-x-2 > * + * {
+          margin-left: 0.5rem;
+        }
+
+        .grid {
+          display: grid;
+          gap: 1.5rem;
+        }
+
+        .grid-cols-1 {
+          grid-template-columns: repeat(1, 1fr);
+        }
+
+        @media (min-width: 768px) {
+          .md\:grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        .card-hover {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 1.5rem;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          text-align: center;
+          transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+          transform: translateY(-10px);
+          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .card-hover img {
+          width: 100%;
+          height: 12rem;
+          object-fit: cover;
+          border-radius: 12px;
+          margin-bottom: 1rem;
+        }
+
+        .card-hover h3 {
+          font-size: 1.25rem;
+          color: #1f2937;
+          margin-bottom: 0.5rem;
+          text-shadow: none;
+        }
+
+        .card-hover p {
+          font-size: 1.125rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-weight: 700;
+          margin-bottom: 1rem;
+        }
+
+        footer {
+          background: rgba(31, 41, 55, 0.95);
+          backdrop-filter: blur(20px);
+          color: white;
+          text-align: center;
+          padding: 2rem;
+          margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+          h2 { font-size: 2rem; }
+          h3 { font-size: 1.5rem; }
+          table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="bg-icons">
+    <div class="icon">🛒</div>
+    <div class="icon">🛍️</div>
+    <div class="icon">💳</div>
+    <div class="icon">📦</div>
+    <div class="icon">⭐</div>
+    <div class="icon">🎁</div>
+</div>
+
+<nav class="bg-gray-800 text-white sticky top-0 z-10 shadow-lg p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-yellow-400">Customer Dashboard</h1>
+        <a href="/login.html" class="hover:text-yellow-400">Logout</a>
+    </div>
+</nav>
+
+<div class="container mx-auto my-12 dashboard-bg p-8 rounded-lg shadow-lg">
+    <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">My Dashboard</h2>
+
+    <section class="mb-12">
+        <h3 class="text-3xl font-bold text-gray-800 mb-4">My Cart</h3>
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="cart"></tbody>
+        </table>
+        <button onclick="payCart()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4">Pay Now</button>
+    </section>
+
+    <section class="mb-12">
+        <h3 class="text-3xl font-bold text-gray-800 mb-4">My Orders</h3>
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="orders"></tbody>
+        </table>
+        <form id="addOrderForm" class="mt-4 space-y-4 bg-white p-4 rounded-lg shadow-md">
+            <input type="date" id="orderDate" class="block w-full p-2 border rounded" required>
+            <input type="text" id="status" placeholder="Status (e.g., pending)" class="block w-full p-2 border rounded" required>
+            <input type="number" id="totalAmount" placeholder="Total Amount" class="block w-full p-2 border rounded" step="0.01" required>
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Add Order</button>
+        </form>
+    </section>
+
+    <section class="mb-12">
+        <h3 class="text-3xl font-bold text-gray-800 mb-4">My Reviews</h3>
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+            <tr>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="reviews"></tbody>
+        </table>
+        <form id="addReviewForm" class="mt-4 space-y-4 bg-white p-4 rounded-lg shadow-md">
+            <input type="number" id="rating" placeholder="Rating (1-5)" class="block w-full p-2 border rounded" min="1" max="5" required>
+            <input type="text" id="comment" placeholder="Comment" class="block w-full p-2 border rounded" required>
+            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Add Review</button>
+        </form>
+    </section>
+
+    <section>
+        <h3 class="text-3xl font-bold text-gray-800 mb-4">Search Products</h3>
+        <div class="flex space-x-2 mb-4">
+            <input type="text" id="search" placeholder="Search products..." class="p-2 border rounded w-full">
+            <button onclick="searchProducts()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Search</button>
+        </div>
+        <div id="searchResults" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </section>
+</div>
+
+<footer class="bg-gray-800 text-white p-4 text-center mt-12">
+    <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('Customer Dashboard - User:', user); // Debug log
+    if (!user || !user.idNo || user.type !== 'customer') {
+        console.log('Auth failed - Redirecting to login'); // Debug log
+        window.location.href = '/login.html';
+    }
+
+    async function fetchData(url, divId, template) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        console.log(`Fetched ${divId} data:`, data); // Debug log
+        const div = document.getElementById(divId);
+        div.innerHTML = '';
+        if (Array.isArray(data)) {
+            data.forEach(item => {
+                const html = template(item);
+                if (html) div.innerHTML += html;
+            });
+        } else if (data && typeof template === 'function') {
+            div.innerHTML += template(data);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        document.getElementById(divId).innerHTML = `<tr><td colspan="3" class="py-2 px-4 text-red-500">Error loading data: ${error.message}</td></tr>`;
+      }
+    }
+
+    fetchData('http://localhost:8080/api/carts', 'cart', c => {
+        if (c && c.products && Array.isArray(c.products)) {
+            let html = '';
+            c.products.forEach(p => {
+                html += `
+                    <tr>
+                        <td class="py-2 px-4">${p.name || 'N/A'}</td>
+                        <td class="py-2 px-4">$${p.price || 0}</td>
+                        <td class="py-2 px-4">
+                            <button onclick="removeFromCart(${p.productId || 0})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Remove</button>
+                        </td>
+                    </tr>`;
+            });
+            return html || '<tr><td colspan="3" class="py-2 px-4 text-gray-500">No items in cart</td></tr>';
+        }
+        return '<tr><td colspan="3" class="py-2 px-4 text-gray-500">No items in cart</td></tr>';
+    });
+
+    fetchData('http://localhost:8080/api/orders', 'orders', o => {
+        if (o && o.customer && o.customer.idNo === user.idNo) {
+            return `
+                <tr>
+                    <td class="py-2 px-4">${o.orderId || 'N/A'}</td>
+                    <td class="py-2 px-4">${o.status || 'N/A'}</td>
+                    <td class="py-2 px-4">$${o.totalAmount || 0}</td>
+                    <td class="py-2 px-4">
+                        <button onclick="editOrder(${o.orderId || 0})" class="bg-yellow-400 text-gray-800 py-1 px-2 rounded hover:bg-yellow-500">Edit</button>
+                        <button onclick="deleteOrder(${o.orderId || 0})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</button>
+                    </td>
+                </tr>`;
+        }
+        return '';
+    });
+
+    fetchData('http://localhost:8080/api/reviews', 'reviews', r => {
+        if (r && r.customer && r.customer.idNo === user.idNo) {
+            return `
+                <tr>
+                    <td class="py-2 px-4">${r.rating || 'N/A'}</td>
+                    <td class="py-2 px-4">${r.comment || 'N/A'}</td>
+                    <td class="py-2 px-4">
+                        <button onclick="deleteReview(${r.rId || 0})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</button>
+                    </td>
+                </tr>`;
+        }
+        return '';
+    });
+
+    document.getElementById('addOrderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const order = {
+            orderDate: new Date(document.getElementById('orderDate').value),
+            status: document.getElementById('status').value,
+            totalAmount: parseFloat(document.getElementById('totalAmount').value),
+            customer: { idNo: user.idNo }
+        };
+        try {
+            const res = await fetch('http://localhost:8080/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            });
+            if (!res.ok) throw new Error('Failed to add order');
+            location.reload();
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    });
+
+    document.getElementById('addReviewForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const review = {
+            rating: parseInt(document.getElementById('rating').value),
+            comment: document.getElementById('comment').value,
+            reviewDate: new Date(),
+            customer: { idNo: user.idNo },
+            product: { productId: 1 }
+        };
+        try {
+            const res = await fetch('http://localhost:8080/api/reviews', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(review)
+            });
+            if (!res.ok) throw new Error('Failed to add review');
+            location.reload();
+        } catch (error) {
+            alert('Error: ' + error.message);
+        }
+    });
+
+    async function searchProducts() {
+        const query = document.getElementById('search').value;
+        try {
+            const res = await fetch(`http://localhost:8080/api/products?search=${query}`);
+            if (!res.ok) throw new Error('Search failed');
+            const data = await res.json();
+            const div = document.getElementById('searchResults');
+            div.innerHTML = data.map(p => `
+                <div class="card-hover bg-white p-6 rounded-lg shadow-md text-center">
+                    <img src="${p.image || 'https://via.placeholder.com/200'}" alt="${p.name || 'Product'}" class="w-full h-48 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">${p.name || 'N/A'}</h3>
+                    <p class="text-lg text-yellow-600">$${p.price || 0}</p>
+                    <button onclick="addToCart(${p.productId || 0})" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-2">Add to Cart</button>
+                </div>`).join('');
+        } catch (error) {
+            document.getElementById('searchResults').innerHTML = `<p class="text-red-500">Error: ${error.message}</p>`;
+        }
+    }
+
+    window.payCart = () => {
+        alert('Payment initiated! Implement payment logic with /api/payments.');
+    };
+
+    window.editOrder = (id) => { alert('Edit order ' + id); };
+    window.deleteOrder = (id) => {
+        if (confirm('Delete order ' + id + '?')) {
+            fetch(`http://localhost:8080/api/orders/${id}`, { method: 'DELETE' }).then(() => location.reload());
+        }
+    };
+    window.deleteReview = (id) => {
+        if (confirm('Delete review ' + id + '?')) {
+            fetch(`http://localhost:8080/api/reviews/${id}`, { method: 'DELETE' }).then(() => location.reload());
+        }
+    };
+    window.removeFromCart = (id) => {
+        if (confirm('Remove item ' + id + ' from cart?')) {
+            location.reload();
+        }
+    };
+    window.addToCart = (id) => {
+        alert('Added product ' + id + ' to cart!');
+    };
+</script>
+</body>
+</html>

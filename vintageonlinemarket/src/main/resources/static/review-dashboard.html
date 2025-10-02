@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage Online Market - Review Dashboard</title>
+  <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+  <style>
+    .dashboard-bg { background: linear-gradient(135deg, #F5F5F4 0%, #6B7280 100%); }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.2); transition: 0.3s; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #6B7280; color: white; }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<nav class="bg-gray-800 text-white sticky top-0 z-10 shadow-lg p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-yellow-400">Review Management</h1>
+    <a href="/admin-dashboard.html" class="hover:text-yellow-400">Back to Admin</a>
+  </div>
+</nav>
+
+<div class="container mx-auto my-12 dashboard-bg p-8 rounded-lg shadow-lg">
+  <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Manage Reviews</h2>
+
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-8">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Rating</th>
+      <th>Comment</th>
+      <th>Review Date</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="reviews"></tbody>
+  </table>
+
+  <form id="reviewForm" class="space-y-4 bg-white p-4 rounded-lg shadow-md">
+    <input type="hidden" id="rId">
+    <input type="number" id="rating" placeholder="Rating (1-5)" class="block w-full p-2 border rounded" min="1" max="5" required>
+    <input type="text" id="comment" placeholder="Comment" class="block w-full p-2 border rounded" required>
+    <input type="date" id="reviewDate" class="block w-full p-2 border rounded" required>
+    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Save Review</button>
+  </form>
+</div>
+
+<footer class="bg-gray-800 text-white p-4 text-center mt-12">
+  <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || !user.aId) window.location.href = '/login.html'; // Check for admin role
+
+  async function fetchData(url, divId, template) {
+      try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          const data = await res.json();
+          const div = document.getElementById(divId);
+          div.innerHTML = ''; // Clear existing content
+          data.forEach(item => {
+              div.innerHTML += template(item);
+          });
+      } catch (error) {
+          console.error('Fetch error:', error);
+          document.getElementById(divId).innerHTML = `<tr><td colspan="5" class="py-2 px-4 text-red-500">Error loading data: ${error.message}</td></tr>`;
+      }
+  }
+
+  // Load Reviews
+  fetchData('http://localhost:8080/api/reviews', 'reviews', review => `
+      <tr>
+          <td class="py-2 px-4">${review.rId}</td>
+          <td class="py-2 px-4">${review.rating}</td>
+          <td class="py-2 px-4">${review.comment}</td>
+          <td class="py-2 px-4">${new Date(review.reviewDate).toLocaleDateString()}</td>
+          <td class="py-2 px-4">
+              <button onclick="editReview(${review.rId}, ${review.rating}, '${review.comment}', '${new Date(review.reviewDate).toISOString().split('T')[0]}')" class="bg-yellow-400 text-gray-800 py-1 px-2 rounded hover:bg-yellow-500">Edit</button>
+              <button onclick="deleteReview(${review.rId})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</button>
+          </td>
+      </tr>`);
+
+  // Save Review (Add/Edit)
+  document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('rId').value;
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `http://localhost:8080/api/reviews/${id}` : 'http://localhost:8080/api/reviews';
+      const review = {
+          rating: parseInt(document.getElementById('rating').value),
+          comment: document.getElementById('comment').value,
+          reviewDate: new Date(document.getElementById('reviewDate').value)
+      };
+      try {
+          const res = await fetch(url, {
+              method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(review)
+          });
+          if (!res.ok) throw new Error('Failed to save review');
+          location.reload();
+      } catch (error) {
+          alert('Error: ' + error.message);
+      }
+  });
+
+  // Edit Review
+  window.editReview = (id, rating, comment, reviewDate) => {
+      document.getElementById('rId').value = id;
+      document.getElementById('rating').value = rating;
+      document.getElementById('comment').value = comment;
+      document.getElementById('reviewDate').value = reviewDate;
+  };
+
+  // Delete Review
+  window.deleteReview = (id) => {
+      if (confirm('Delete review ' + id + '?')) {
+          fetch(`http://localhost:8080/api/reviews/${id}`, { method: 'DELETE' })
+              .then(() => location.reload())
+              .catch(error => alert('Error: ' + error.message));
+      }
+  };
+</script>
+</body>
+</html>

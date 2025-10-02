@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Online Market - Seller Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #ffffff;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 1.25rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -250px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -50px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 0.875rem;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        /* Table */
+        .table-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .btn-edit {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-delete {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(102, 126, 234, 0.1);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .btn-edit, .btn-delete {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.875rem;
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .btn-edit {
+                margin-right: 0;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-container">
+        <div class="logo">Seller Dashboard</div>
+        <div class="nav-links">
+            <a href="/login.html">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>My Seller Dashboard</h1>
+        <p>Manage your shops and products</p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Shops Section -->
+    <div class="section">
+        <h2 class="section-title">My Shops</h2>
+        <div class="table-card">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="shops">
+                <tr>
+                    <td colspan="3">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading shops...</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-card">
+            <form id="shopForm">
+                <input type="hidden" id="sid">
+                <div class="form-group">
+                    <input type="text" id="shopName" placeholder="Shop Name" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" id="shopSubmitButton" class="btn-primary">Add Shop</button>
+                    <button type="button" id="shopCancelButton" class="btn-secondary" style="display: none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="section">
+        <h2 class="section-title">My Products</h2>
+        <div class="table-card">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Available</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="products">
+                <tr>
+                    <td colspan="5">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Loading products...</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-card">
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Product Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="price" placeholder="Price" step="0.01" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="available">
+                    <label for="available">Available</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="quantity" placeholder="Quantity" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" id="productSubmitButton" class="btn-primary">Add Product</button>
+                    <button type="button" id="productCancelButton" class="btn-secondary" style="display: none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || user.type !== 'seller') window.location.href = '/login.html';
+
+    async function fetchData(url, divId, template) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            const data = await res.json();
+            const div = document.getElementById(divId);
+            div.innerHTML = '';
+            let hasData = false;
+            data.forEach(item => {
+                const html = template(item);
+                if (html) {
+                    div.innerHTML += html;
+                    hasData = true;
+                }
+            });
+            if (!hasData) {
+                div.innerHTML = `<tr><td colspan="5" class="loading">No items found</td></tr>`;
+            }
+            return data;
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById(divId).innerHTML = `<tr><td colspan="5" class="loading" style="color: #ef4444;">Error loading data: ${error.message}</td></tr>`;
+            return [];
+        }
+    }
+
+    // Load Shops
+    fetchData('http://localhost:8080/api/shops', 'shops', s => {
+        if (s.seller && s.seller.idNo === user.idNo) {
+            return `
+                <tr>
+                    <td>${s.sid}</td>
+                    <td>${s.shopName}</td>
+                    <td>
+                        <button onclick="editShop(${s.sid}, '${s.shopName}')" class="btn-edit">Edit</button>
+                        <button onclick="deleteShop(${s.sid})" class="btn-delete">Delete</button>
+                    </td>
+                </tr>`;
+        }
+        return '';
+    });
+
+    // Load Products
+    fetchData('http://localhost:8080/api/products', 'products', p => {
+        if (p.seller && p.seller.idNo === user.idNo) {
+            return `
+                <tr>
+                    <td>${p.name}</td>
+                    <td>$${p.price}</td>
+                    <td>${p.available ? 'Yes' : 'No'}</td>
+                    <td>${p.quantity}</td>
+                    <td>
+                        <button onclick="editProduct(${p.productId}, '${p.name}', ${p.price}, ${p.available}, ${p.quantity})" class="btn-edit">Edit</button>
+                        <button onclick="deleteProduct(${p.productId})" class="btn-delete">Delete</button>
+                    </td>
+                </tr>`;
+        }
+        return '';
+    });
+
+    // Handle Shop Form
+    document.getElementById('shopForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('sid').value;
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `http://localhost:8080/api/shops/${id}` : 'http://localhost:8080/api/shops';
+        const shop = {
+            shopName: document.getElementById('shopName').value,
+            seller: { idNo: user.idNo }
+        };
+
+        if (!id) {
+            const res = await fetch('http://localhost:8080/api/shops');
+            const shops = await res.json();
+            const userShops = shops.filter(s => s.seller && s.seller.idNo === user.idNo);
+            if (userShops.length > 0) {
+                alert('You already have a shop registered. Only one shop is allowed per seller.');
+                return;
+            }
+        }
+
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(shop)
+            });
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to save shop: ${errorText}`);
+            }
+            location.reload();
+        } catch (error) {
+            alert('Error: ' + error.message);
+            console.error('Shop save error:', error);
+        }
+    });
+
+    // Handle Product Form
+    document.getElementById('productForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('productId').value;
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `http://localhost:8080/api/products/${id}` : 'http://localhost:8080/api/products';
+        const product = {
+            name: document.getElementById('name').value,
+            price: parseFloat(document.getElementById('price').value),
+            available: document.getElementById('available').checked,
+            quantity: parseInt(document.getElementById('quantity').value),
+            seller: { idNo: user.idNo }
+        };
+
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(product)
+            });
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to save product: ${errorText}`);
+            }
+            location.reload();
+        } catch (error) {
+            alert('Error: ' + error.message);
+            console.error('Product save error:', error);
+        }
+    });
+
+    // Edit Shop
+    window.editShop = (id, shopName) => {
+        document.getElementById('sid').value = id;
+        document.getElementById('shopName').value = shopName;
+        document.getElementById('shopSubmitButton').textContent = 'Update Shop';
+        document.getElementById('shopCancelButton').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('shopForm').offsetTop - 100, behavior: 'smooth' });
+    };
+
+    // Cancel Shop Edit
+    document.getElementById('shopCancelButton').addEventListener('click', () => {
+        document.getElementById('sid').value = '';
+        document.getElementById('shopName').value = '';
+        document.getElementById('shopSubmitButton').textContent = 'Add Shop';
+        document.getElementById('shopCancelButton').style.display = 'none';
+    });
+
+    // Delete Shop
+    window.deleteShop = (id) => {
+        if (confirm('Delete shop ' + id + '?')) {
+            fetch(`http://localhost:8080/api/shops/${id}`, { method: 'DELETE' }).then(() => location.reload());
+        }
+    };
+
+    // Edit Product
+    window.editProduct = (id, name, price, available, quantity) => {
+        document.getElementById('productId').value = id;
+        document.getElementById('name').value = name;
+        document.getElementById('price').value = price;
+        document.getElementById('available').checked = available;
+        document.getElementById('quantity').value = quantity;
+        document.getElementById('productSubmitButton').textContent = 'Update Product';
+        document.getElementById('productCancelButton').style.display = 'block';
+        window.scrollTo({ top: document.getElementById('productForm').offsetTop - 100, behavior: 'smooth' });
+    };
+
+    // Cancel Product Edit
+    document.getElementById('productCancelButton').addEventListener('click', () => {
+        document.getElementById('productId').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('available').checked = false;
+        document.getElementById('quantity').value = '';
+        document.getElementById('productSubmitButton').textContent = 'Add Product';
+        document.getElementById('productCancelButton').style.display = 'none';
+    });
+
+    // Delete Product
+    window.deleteProduct = (id) => {
+        if (confirm('Delete product ' + id + '?')) {
+            fetch(`http://localhost:8080/api/products/${id}`, { method: 'DELETE' }).then(() => location.reload());
+        }
+    };
+</script>
+</body>
+</html>

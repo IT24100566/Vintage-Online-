@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage Online Market - Category Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-icons {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0.08;
+      z-index: 0;
+    }
+
+    .icon {
+      position: absolute;
+      font-size: 3rem;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .icon:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .icon:nth-child(2) { left: 80%; top: 10%; animation-delay: 2s; }
+    .icon:nth-child(3) { left: 20%; top: 80%; animation-delay: 4s; }
+    .icon:nth-child(4) { left: 70%; top: 70%; animation-delay: 6s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    nav .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav a {
+      color: #4b5563;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.625rem 1.5rem;
+      background: rgba(102, 126, 234, 0.1);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      text-align: center;
+      margin-bottom: 3rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease-out 0.2s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(102, 126, 234, 0.05);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 1rem;
+      color: #4b5563;
+    }
+
+    .bg-yellow-400 {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+      margin-right: 0.5rem;
+    }
+
+    .bg-yellow-400:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    .bg-red-500 {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+    }
+
+    .bg-red-500:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: fadeInUp 0.6s ease-out 0.4s backwards;
+    }
+
+    .space-y-4 > * + * {
+      margin-top: 1rem;
+    }
+
+    input[type="text"], input[type="hidden"] {
+      display: block;
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+      color: #1f2937;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .bg-green-500 {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+      50% {
+        box-shadow: 0 4px 30px rgba(102, 126, 234, 0.8);
+      }
+    }
+
+    .bg-green-500:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    footer {
+      background: rgba(31, 41, 55, 0.95);
+      backdrop-filter: blur(20px);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 2rem;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="bg-icons">
+  <div class="icon">📁</div>
+  <div class="icon">📋</div>
+  <div class="icon">✏️</div>
+  <div class="icon">🗂️</div>
+</div>
+
+<nav class="bg-gray-800 text-white sticky top-0 z-10 shadow-lg p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-yellow-400">Category Management</h1>
+    <a href="/admin-dashboard.html" class="hover:text-yellow-400">Back to Admin</a>
+  </div>
+</nav>
+
+<div class="container mx-auto my-12 dashboard-bg p-8 rounded-lg shadow-lg">
+  <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Manage Categories</h2>
+
+  <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-8">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="categories"></tbody>
+  </table>
+
+  <form id="categoryForm" class="space-y-4 bg-white p-4 rounded-lg shadow-md">
+    <input type="hidden" id="catId">
+    <input type="text" id="name" placeholder="Name" class="block w-full p-2 border rounded" required>
+    <input type="text" id="description" placeholder="Description" class="block w-full p-2 border rounded" required>
+    <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Save Category</button>
+  </form>
+</div>
+
+<footer class="bg-gray-800 text-white p-4 text-center mt-12">
+  <p>&copy; 2025 VintageOnlineMarket. All rights reserved.</p>
+</footer>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || !user.aId) window.location.href = '/login.html';
+
+  async function fetchData(url, divId, template) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      const div = document.getElementById(divId);
+      div.innerHTML = '';
+      data.forEach(item => {
+        div.innerHTML += template(item);
+      });
+    } catch (error) {
+      console.error('Fetch error:', error);
+      document.getElementById(divId).innerHTML = `<tr><td colspan="4" class="py-2 px-4 text-red-500">Error loading data: ${error.message}</td></tr>`;
+    }
+  }
+
+  fetchData('http://localhost:8080/api/categories', 'categories', cat => `
+    <tr>
+      <td class="py-2 px-4">${cat.catId}</td>
+      <td class="py-2 px-4">${cat.name}</td>
+      <td class="py-2 px-4">${cat.description}</td>
+      <td class="py-2 px-4">
+        <button onclick="editCategory(${cat.catId}, '${cat.name}', '${cat.description}')" class="bg-yellow-400 text-gray-800 py-1 px-2 rounded hover:bg-yellow-500">Edit</button>
+        <button onclick="deleteCategory(${cat.catId})" class="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">Delete</button>
+      </td>
+    </tr>`);
+
+  document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('catId').value;
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `http://localhost:8080/api/categories/${id}` : 'http://localhost:8080/api/categories';
+    const category = {
+      name: document.getElementById('name').value,
+      description: document.getElementById('description').value
+    };
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(category)
+      });
+      if (!res.ok) throw new Error('Failed to save category');
+      location.reload();
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  });
+
+  window.editCategory = (id, name, description) => {
+    document.getElementById('catId').value = id;
+    document.getElementById('name').value = name;
+    document.getElementById('description').value = description;
+  };
+
+  window.deleteCategory = (id) => {
+    if (confirm('Delete category ' + id + '?')) {
+      fetch(`http://localhost:8080/api/categories/${id}`, { method: 'DELETE' })
+        .then(() => location.reload())
+        .catch(error => alert('Error: ' + error.message));
+    }
+  };
+</script>
+</body>
+</html>
